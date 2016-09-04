@@ -2,3 +2,19 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class='container-fluid'>
+
+    <h1>Notes Index</h1>
+
+    <section>
+        <button class='btn btn-default sort-by-finish-date'>By Finish Date</button>
+        <button class='btn btn-default sory-by-create-date'>By Create Date</button>
+        <button class='btn btn-default sort-by-importance'>By Importance</button>
+        <button class='btn btn-default hide-finished'>Hide Finished</button>
+        <button class='btn btn-default style-switcher'>Style Switcher</button>
+        <article class='note_item' data-finished="false" data-date="3" data-importance="1">Note 1</article>
+        <article class='note_item' data-finished="true" data-date="6" data-importance="3">Note 2</article>
+        <article class='note_item' data-finished="false" data-date="1" data-importance="5">Note 3</article>
+        <article class='note_item' data-finished="true" data-date="11" data-importance="2">Note 4</article>
+    </section>
+</div>
