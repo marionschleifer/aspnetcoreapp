@@ -11,6 +11,13 @@
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "run",
+            "isBuildCommand": false,
+            "echoCommand": true,
+            "showOutput": "always",
+            "problemMatcher": "$msCompile"
         }
     ]
 }
