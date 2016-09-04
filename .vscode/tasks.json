@@ -18,6 +18,12 @@
             "echoCommand": true,
             "showOutput": "always",
             "problemMatcher": "$msCompile"
+        },
+        {
+            "taskName": "watch",
+            "args": [ "bundle", "watch" ],
+            "suppressTaskName": true,
+            "isWatching": true
         }
     ]
 }
