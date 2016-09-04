@@ -8,12 +8,15 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
+      "wwwroot/js/site.js",
+      "wwwroot/js/sort.js",
+      "wwwroot/js/filter.js",
+      "wwwroot/js/style_switcher.js"
     ],
     "minify": {
       "enabled": true,
       "renameLocals": true
     },
-    "sourceMap": false
+    "sourceMap": true
   }
 ]
