@@ -1,0 +1,26 @@
+@model NotesApp.Models.Note
+
+@{
+  ViewBag.Title = "New note";
+}
+<h2>@ViewData["Title"]</h2>
+<form asp-controller="Note" asp-action="Create" method="post"
+  class="form-horizontal" role="form">
+  <div class="form-horizontal">
+    <div class="form-group">
+      <label asp-for="Importance" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="Importance" class="form-control" />
+      </div>
+      <label asp-for="Content" class="col-md-2 control-label"></label>
+      <div class="col-md-10">
+        <input asp-for="Content" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Create" class="btn btn-default" />
+      </div>
+    </div>
+  </div>
+</form>
