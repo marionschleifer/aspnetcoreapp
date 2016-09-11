@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using NotesApp.Models;
+using System.Threading.Tasks;
 
 namespace NotesApp.Controllers
 {
@@ -13,10 +14,10 @@ namespace NotesApp.Controllers
         }
         public INoteRepository Notes { get; set; }
 
-        public IActionResult Index()
-        {
-            return View(Notes.GetAll());
-        }
+        // public IActionResult Index()
+        // {
+        //     return View(Notes.GetAll());
+        // }
 
         [HttpGet("{id}", Name = "GetNote")]
         public IActionResult GetById(string id)
@@ -26,16 +27,18 @@ namespace NotesApp.Controllers
             {
                 return NotFound();
             }
-            return new ObjectResult(item);
+            return View(item);
         }
 
-        // [HttpGet]
-        // public IActionResult Create()
-        // {
-        //     return View();
-        // }
+
+        // GET: Notes/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create([FromBody] Note note)
         {
             if (note == null)
@@ -43,8 +46,23 @@ namespace NotesApp.Controllers
                 return BadRequest();
             }
             Notes.Add(note);
-            return CreatedAtRoute("GetNote", new { id = note.Key }, note);
+            return CreatedAtRoute("GetById", new { id = note.Key }, note);
         }
+
+        // public IActionResult Update(int id)
+        // {
+        //     if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     var note = Notes.Find(id);
+        //     if (note == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return View(note);
+        // }
 
         [HttpPut("{id}")]
         public IActionResult Update(string id, [FromBody] Note note)
@@ -61,7 +79,7 @@ namespace NotesApp.Controllers
             }
 
             Notes.Update(note);
-            return new NoContentResult();
+            return View(note);
         }
 
         [HttpDelete("{id}")]
@@ -74,7 +92,7 @@ namespace NotesApp.Controllers
             }
 
             Notes.Remove(id);
-            return new NoContentResult();   
+            return View(note);
         }
     }    
 }

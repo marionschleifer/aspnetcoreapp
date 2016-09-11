@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NotesApp.Models
@@ -9,10 +10,12 @@ namespace NotesApp.Models
         [NotMapped]
         public DateTime CreateDate { get; set; }
         
+        [DataType(DataType.DateTime)]
         public DateTime FinishDate { get; set; }
 
         public bool Finished { get; set; }
 
+        [Range(0, 5)]
         public int Importance { get; set; }
 
         public String Content { get; set; }
