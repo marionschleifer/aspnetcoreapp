@@ -11,7 +11,9 @@ namespace NotesApp.Models
 
         public NoteRepository()
         {
-            Add(new Note { Content = "Bla" });
+            Add(new Note { Content = "Call Grandma", Importance = 5 });
+            Add(new Note { Content = "Free Code Camp", Importance = 3 });
+            Add(new Note { Content = "Book flight", Importance = 1 });
         }
 
         public IEnumerable<Note> GetAll()

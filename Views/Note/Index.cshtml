@@ -1,4 +1,4 @@
-@model IEnumerable<Notes>
+@model IEnumerable<NotesApp.Models.Note>
 @{
   ViewBag.Title = "Notes";
 }
@@ -8,8 +8,9 @@
 </p>
 <table class="table">
   <tr>
-    <th>Importance</th>
-    <th>Content</th>
+    <th>@Html.DisplayNameFor(model => model.Importance)</th>
+    <th>@Html.DisplayNameFor(model => model.Content)</th>
+    <th>Actions</th>
   </tr>
   @foreach (var item in Model)
   {
@@ -21,8 +22,10 @@
         @Html.DisplayFor(modelItem => item.Content)
       </td>
       <td>
-        <a asp-controller="Notes" asp-action="Delete"
-          asp-route-id="@item.id">Delete</a>
+        <!--<a asp-controller="Notes" asp-action="Delete" asp-route-id="@item.Key">Delete</a>-->
+        <a asp-action="Edit" asp-route-id="@item.Key">Edit</a> |
+        <a asp-action="Delete" asp-route-id="@item.Key">Delete</a> |
+        <a asp-action="GetById" asp-route-id="@item.Key">Show</a>
       </td>
     </tr>
   }

@@ -4,7 +4,7 @@ using NotesApp.Models;
 
 namespace NotesApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class NoteController : Controller
     {
         public NoteController(INoteRepository notes)
@@ -13,9 +13,9 @@ namespace NotesApp.Controllers
         }
         public INoteRepository Notes { get; set; }
 
-        public IEnumerable<Note> GetAll()
+        public IActionResult Index()
         {
-            return Notes.GetAll();
+            return View(Notes.GetAll());
         }
 
         [HttpGet("{id}", Name = "GetNote")]
@@ -29,14 +29,20 @@ namespace NotesApp.Controllers
             return new ObjectResult(item);
         }
 
+        // [HttpGet]
+        // public IActionResult Create()
+        // {
+        //     return View();
+        // }
+
         [HttpPost]
         public IActionResult Create([FromBody] Note note)
         {
             if (note == null)
-        {
-            return BadRequest();
-        }
-        Notes.Add(note);
+            {
+                return BadRequest();
+            }
+            Notes.Add(note);
             return CreatedAtRoute("GetNote", new { id = note.Key }, note);
         }
 
