@@ -48,40 +48,34 @@ namespace NotesApp.Controllers
             return View(note);
         }
 
-        // public IActionResult Edit(string id)
-        // {
-        //     if (id == null)
-        //     {
-        //         return NotFound();
-        //     }
+        public IActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //     var note = Notes.Find(id);
-        //     if (note == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return View(note);
-        // }
+            var note = Notes.Find(id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+            return View(note);
+        }
 
-        // [HttpPut("{id}")]
-        // public IActionResult Update(string id, [FromBody] Note note)
-        // {
-        //     if (note == null || note.Key != id)
-        //     {
-        //         return BadRequest();
-        //     }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Note note)
+        {
+            if (ModelState.IsValid)
+            {
+                Notes.Update(note);
+                return RedirectToAction("Index");
+            }
+            return View(note); 
+        }
 
-        //     var todo = Notes.Find(id);
-        //     if (todo == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     Notes.Update(note);
-        //     return View(note);
-        // }
-
-        [HttpDelete("{id}")]
+        [ActionName("Delete")]
         public IActionResult Delete(string id)
         {
             var note = Notes.Find(id);
@@ -91,7 +85,7 @@ namespace NotesApp.Controllers
             }
 
             Notes.Remove(id);
-            return View(note);
+            return RedirectToAction("Index");
         }
     }    
 }
