@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace NotesApp.Controllers
 {
-    [Route("[controller]")]
     public class NoteController : Controller
     {
         public NoteController(INoteRepository notes)
@@ -31,38 +30,38 @@ namespace NotesApp.Controllers
         }
 
 
-        // GET: Notes/Create
-        // public IActionResult Create()
-        // {
-        //     return View();
-        // }
+        // // GET: Notes/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([FromBody] Note note)
+        public IActionResult Create(Note note)
         {
-            if (note == null)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-            Notes.Add(note);
-            return CreatedAtRoute("GetById", new { id = note.Key }, note);
-        }
-
-        public IActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var note = Notes.Find(id);
-            if (note == null)
-            {
-                return NotFound();
+                Notes.Add(note);
+                return RedirectToAction("Index");
             }
             return View(note);
         }
+
+        // public IActionResult Edit(string id)
+        // {
+        //     if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     var note = Notes.Find(id);
+        //     if (note == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return View(note);
+        // }
 
         // [HttpPut("{id}")]
         // public IActionResult Update(string id, [FromBody] Note note)

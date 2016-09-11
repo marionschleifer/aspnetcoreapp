@@ -31,6 +31,7 @@ namespace NotesApp
             // Add framework services.
             services.AddMvc();
             services.AddSingleton<INoteRepository, NoteRepository>();
+            services.AddRouting();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +56,7 @@ namespace NotesApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Notes}/{action=Index}/{id?}");
+                    template: "{controller=Note}/{action=Index}/{id?}");
             });
         }
     }

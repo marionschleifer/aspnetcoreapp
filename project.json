@@ -2,7 +2,8 @@
   "dependencies": {
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
-      "type": "platform"
+      "type": "platform",
+      "Microsoft.AspNetCore.Routing": "1.0.0"
     },
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Mvc": "1.0.0",
@@ -60,8 +61,8 @@
   },
 
   "scripts": {
-    "precompile": [ "dotnet bundle" ],
-    "prepublish": [ "bower install" ],
+    "precompile": [],
+    "prepublish": [ "dotnet bundle", "bower install" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   },
 

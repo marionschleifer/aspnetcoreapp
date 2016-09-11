@@ -15,8 +15,12 @@ namespace NotesApp.Models
 
         public bool Finished { get; set; }
 
+        [Required]
         [Range(0, 5)]
         public int Importance { get; set; }
+
+        [Required]
+        public String Title { get; set; }
 
         public String Content { get; set; }
 
