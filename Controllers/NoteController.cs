@@ -14,10 +14,10 @@ namespace NotesApp.Controllers
         }
         public INoteRepository Notes { get; set; }
 
-        // public IActionResult Index()
-        // {
-        //     return View(Notes.GetAll());
-        // }
+        public IActionResult Index()
+        {
+            return View(Notes.GetAll());
+        }
 
         [HttpGet("{id}", Name = "GetNote")]
         public IActionResult GetById(string id)
@@ -32,10 +32,10 @@ namespace NotesApp.Controllers
 
 
         // GET: Notes/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        // public IActionResult Create()
+        // {
+        //     return View();
+        // }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
