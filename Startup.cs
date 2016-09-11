@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NotesApp.Models;
 
 namespace NotesApp
 {
@@ -29,6 +30,7 @@ namespace NotesApp
         {
             // Add framework services.
             services.AddMvc();
+            services.AddSingleton<INoteRepository, NoteRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +55,7 @@ namespace NotesApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Note}/{action=Index}/{id?}");
             });
         }
     }
