@@ -55,7 +55,7 @@ namespace NotesApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Note}/{action=Index}/{id?}");
+                    template: "{controller=Notes}/{action=Index}/{id?}");
             });
         }
     }
