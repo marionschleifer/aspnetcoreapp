@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NotesApp.DbModels;
 
 namespace NotesApp.Models
 {

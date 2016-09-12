@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NotesApp.Models
+namespace NotesApp.DbModels
 {
     public class Note
     {

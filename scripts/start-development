@@ -1,2 +1,2 @@
 dotnet bundle
-ASPNETCORE_ENVIRONMENT=Development dotnet run
+ASPNETCORE_ENVIRONMENT=development dotnet run

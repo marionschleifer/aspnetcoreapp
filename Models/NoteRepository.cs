@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using NotesApp.DbModels;
 
 namespace NotesApp.Models
 {
