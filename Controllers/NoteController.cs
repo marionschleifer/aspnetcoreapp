@@ -2,14 +2,17 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using NotesApp.Models;
 using System.Threading.Tasks;
+using NotesApp.DbModels;
 
 namespace NotesApp.Controllers
 {
     public class NoteController : Controller
     {
-        public NoteController(INoteRepository notes)
+        private readonly NotesContext _context;
+        public NoteController(INoteRepository notes, NotesContext context)
         {
             Notes = notes;
+            _context = context;
         }
         public INoteRepository Notes { get; set; }
 
