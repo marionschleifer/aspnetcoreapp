@@ -43,8 +43,6 @@ namespace NotesApp
             loggerFactory.AddDebug();
 
             var context = app.ApplicationServices.GetService<NotesContext>();
-            AddTestData(context);
-
 
             if (env.IsDevelopment())
             {
@@ -64,29 +62,6 @@ namespace NotesApp
                     name: "default",
                     template: "{controller=Note}/{action=Index}/{id?}");
             });
-        }
-
-        private static void AddTestData(NotesContext context)
-        {
-            var testNote1 = new DbModels.Note
-            {
-                Title = "Call mum",
-                Content = "Call mum on number 12345",
-                Importance = 1
-            };
-        
-            context.Notes.Add(testNote1);
-        
-            var testNote2 = new DbModels.Note
-            {
-                Title = "Book flight",
-                Content = "Book flight on skyscanner.com",
-                Importance = 5
-            };
-        
-            context.Notes.Add(testNote2);
-        
-            context.SaveChanges();
         }
     }
 }
