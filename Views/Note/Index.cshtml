@@ -1,4 +1,4 @@
-@model IEnumerable<NotesApp.DbModels.Note>
+@model IEnumerable<NotesApp.Models.Note>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,6 +9,24 @@
 <p>
     <a asp-action="Create" class="btn btn-default">Create New</a>
 </p>
+
+<p>
+    <div class="row">
+        <div class="col-md-3">
+            @Html.ActionLink("By Finish Date", "Index", new { sort = ViewBag.finishedDateSortParm })
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("By Created Date", "Index", new { sort = ViewBag.createDateSortParm })
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("By Importance", "Index", new { sort = ViewBag.importanceSortParm })
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("Hide finished", "Index", new { sort = ViewBag.filterFinishedParm })
+        </div>
+    </div>
+</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -49,9 +67,9 @@
                 @Html.DisplayFor(modelItem => item.Importance)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Key">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Key">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Key">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

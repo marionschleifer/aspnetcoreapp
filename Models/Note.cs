@@ -2,11 +2,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NotesApp.DbModels
+namespace NotesApp.Models
 {
     public class Note
     {
-        public string Key { get; set; }
+        public long Id { get; set; }
         [NotMapped]
         public DateTime CreateDate { get; set; }
         

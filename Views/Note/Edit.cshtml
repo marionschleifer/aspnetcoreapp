@@ -1,4 +1,4 @@
-@model NotesApp.DbModels.Note
+@model NotesApp.Models.Note
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,7 +11,7 @@
         <h4>Note</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Key" />
+    <input type="hidden" asp-for="Id" />
         <div class="form-group">
             <label asp-for="Title" class="col-md-2 control-label"></label>
             <div class="col-md-10">

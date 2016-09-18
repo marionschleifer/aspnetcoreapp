@@ -1,4 +1,4 @@
-@model NotesApp.DbModels.Note
+@model NotesApp.Models.Note
 
 @{
     ViewData["Title"] = "Create";
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="FinishDate" class="col-md-2 control-label"></label>
+            <label asp-for="FinishDate" type="datetime-local" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="FinishDate" class="form-control" />
                 <span asp-validation-for="FinishDate" class="text-danger" />
