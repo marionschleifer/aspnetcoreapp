@@ -31,7 +31,6 @@ namespace NotesApp
         {
             // Add framework services.
             services.AddMvc();
-            services.AddSingleton<INoteRepository, NoteRepository>();
             services.AddRouting();
             services.AddDbContext<NotesContext>(opt => opt.UseInMemoryDatabase());
         }
@@ -62,6 +61,7 @@ namespace NotesApp
                     name: "default",
                     template: "{controller=Note}/{action=Index}/{id?}");
             });
+            SeedData.Initalize(app.ApplicationServices);
         }
     }
 }
