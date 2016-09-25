@@ -42,14 +42,15 @@ namespace NotesApp.Models
                         Content = "Milch, Zopf, Marmelade, Salat, Kiwi",
                         FinishDate = DateTime.Parse("2016-09-17 18:00"),
                         Finished = true,
+                        FinishedDate = DateTime.Parse("2016-09-25 10:00"),
                         Importance = 2
                     },
                     new Note
                     {
                         Title = "Geburtstagsgeschenk Mella",
                         Content = "Steckenpferd? Andere Idee?",
-                        FinishDate = DateTime.Parse("2016-09-19 17:00"),
                         Finished = true,
+                        FinishedDate = DateTime.Parse("2016-09-24 10:00"),
                         Importance = 3
                     }
                     );

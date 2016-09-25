@@ -63,6 +63,9 @@ namespace NotesApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(note.Finished){
+                    note.FinishedDate=DateTime.Now;
+                }
                 _context.Add(note);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -91,6 +94,10 @@ namespace NotesApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool orgNoteFinish = _context.Notes.Where(m => m.Id == note.Id).Select(m => m.Finished).FirstOrDefault();
+                if(!orgNoteFinish && note.Finished){
+                    note.FinishedDate=DateTime.Now;
+                }
                 _context.Update(note);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
