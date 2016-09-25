@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NotesApp.Models;
 using Microsoft.EntityFrameworkCore;
+using NotesApp.Models;
+using NotesApp.Services;
 
 namespace NotesApp
 {
@@ -29,10 +30,16 @@ namespace NotesApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add custom services.
+            services.AddSingleton<INotesService, NotesService>();
+            services.AddDbContext<NotesContext>(opt => opt.UseInMemoryDatabase());
+
             // Add framework services.
             services.AddMvc();
             services.AddRouting();
-            services.AddDbContext<NotesContext>(opt => opt.UseInMemoryDatabase());
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +61,8 @@ namespace NotesApp
             }
 
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
