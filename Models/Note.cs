@@ -48,7 +48,7 @@ namespace NotesApp.Models
             return date.ToString("MM/dd/yyyy");
         }
 
-                public string CompareDate(DateTime? date){
+        public string CompareDate(DateTime? date){
             if(date.HasValue){
                 return CompareDate(date.Value);
             } else{

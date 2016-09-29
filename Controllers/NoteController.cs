@@ -33,8 +33,6 @@ namespace NotesApp.Controllers
             string sort = HttpContext.Session.GetString(SessionSelectedFilter);
             bool hide = Convert.ToBoolean(HttpContext.Session.GetInt32(SessionHideFinished));
 
-            ViewBag.filterFinishedParm = hide == true ? false : true;
-
             List<Note> notes = _notesService.GetSortedList(_context.Notes.ToList(), sort, hide);
             return View(notes);
         }
