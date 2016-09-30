@@ -2,7 +2,9 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using NotesApp.Models;
+using NotesApp.Services;
 using System.Threading.Tasks;
 
 namespace NotesApp.Controllers
@@ -10,48 +12,29 @@ namespace NotesApp.Controllers
     public class NoteController : Controller
     {
         private readonly NotesContext _context;
-        public NoteController(NotesContext context)
+        private readonly INotesService _notesService;
+
+        private string SessionSelectedFilter = "SelectedFilter";
+        private string SessionHideFinished = "HideFinished";
+
+        public NoteController(NotesContext context, INotesService notesService)
         {
-           // Notes = notes;
             _context = context;
+            _notesService = notesService;
         }
-        //public INoteRepository Notes { get; set; }
 
-        public IActionResult Index(string sort, string hide)
+        public IActionResult Index()
         {
-            ViewBag.finishedDateSortParm = String.IsNullOrEmpty(sort) ? "finishedDate_desc" : "";
-            ViewBag.createDateSortParm = sort == "createDate" ? "createDate_desc" : "createDate";
-            ViewBag.importanceSortParm = sort == "importance" ? "importance_desc" : "importance";
+            if (HttpContext.Session.Get(SessionSelectedFilter) == null)
+            {
+                HttpContext.Session.SetString(SessionSelectedFilter, "Default");
+            }
 
-            ViewBag.filterFinishedParm = String.IsNullOrEmpty(hide) ? "filterFinishOff" : (hide == "filterFinishOn" ? "filterFinishOff" : "filterFinishOn");
-            var notes = from n in _context.Notes
-                        select n;
-            switch (sort)
-            {
-                case "finishedDate_desc":
-                    notes = notes.OrderByDescending(n => n.FinishDate);
-                    break;
-                case "createDate":
-                    notes = notes.OrderBy(n => n.CreateDate);
-                    break;
-                case "createDate_desc":
-                    notes = notes.OrderByDescending(n => n.CreateDate);
-                    break;
-                case "importance":
-                    notes = notes.OrderBy(n => n.Importance);
-                    break;
-                case "importance_desc":
-                    notes = notes.OrderByDescending(n => n.Importance);
-                    break;
-                default:
-                    notes = notes.OrderBy(n => n.FinishDate);
-                    break;
-            }
-            if (sort== "filterFinishOn")
-            {
-                notes = notes.Where(s => s.Finished.Equals(false));
-            }
-            return View(notes.ToList());
+            string sort = HttpContext.Session.GetString(SessionSelectedFilter);
+            bool hide = Convert.ToBoolean(HttpContext.Session.GetInt32(SessionHideFinished));
+
+            List<Note> notes = _notesService.GetSortedList(_context.Notes.ToList(), sort, hide);
+            return View(notes);
         }
 
         [HttpGet("{id}", Name = "GetNote")]
@@ -78,6 +61,9 @@ namespace NotesApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(note.Finished){
+                    note.FinishedDate=DateTime.Now;
+                }
                 _context.Add(note);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -106,6 +92,10 @@ namespace NotesApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                bool orgNoteFinish = _context.Notes.Where(m => m.Id == note.Id).Select(m => m.Finished).FirstOrDefault();
+                if(!orgNoteFinish && note.Finished){
+                    note.FinishedDate=DateTime.Now;
+                }
                 _context.Update(note);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -124,6 +114,23 @@ namespace NotesApp.Controllers
 
             _context.Remove(note);
             _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+                // GET: Note/SortBy
+        [HttpGet]
+        public IActionResult SortBy(string sort)
+        {
+            HttpContext.Session.SetString(SessionSelectedFilter, sort);
+            return RedirectToAction("Index");
+        }
+
+        // GET: Note/ShowOnlyFinished
+        [HttpGet]
+        public IActionResult ShowOnlyFinished()
+        {
+            bool showOnlyFinished = Convert.ToBoolean(HttpContext.Session.GetInt32(SessionHideFinished));
+            HttpContext.Session.SetInt32(SessionHideFinished, Convert.ToInt32(!showOnlyFinished));
             return RedirectToAction("Index");
         }
     }    

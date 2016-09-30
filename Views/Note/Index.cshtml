@@ -1,7 +1,14 @@
 @model IEnumerable<NotesApp.Models.Note>
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "Index";
+
+    String hideFinished = Convert.ToBoolean(Context.Session.GetInt32("HideFinished")) ? "active" : "";
+    String filterHideFinshed = Convert.ToBoolean(Context.Session.GetInt32("HideFinished")) ? "Show finished" : "Hide finished";
+    String filterFinishDate = Context.Session.GetString("SelectedFilter").Equals("finishDate") ? "active" : "";
+    String filterCreateDate = Context.Session.GetString("SelectedFilter").Equals("createDate") ? "active" : "";
+    String filterImportance = Context.Session.GetString("SelectedFilter").Equals("importance") ? "active" : "";
 }
 
 <h2>Index</h2>
@@ -11,19 +18,15 @@
 </p>
 
 <p>
-    <div class="row">
-        <div class="col-md-3">
-            @Html.ActionLink("By Finish Date", "Index", new { sort = ViewBag.finishedDateSortParm })
+    <div id="filters" class="row">
+        <div class="col-md-6 col-xs-12 pull-left">
+            <div class="row">
+                <a asp-action="SortBy" asp-route-sort="finishDate" class="btn btn-default col-md-4 col-xs-12 @filterFinishDate">by Finish Date</a>
+                <a asp-action="SortBy" asp-route-sort="createDate" class="btn btn-default col-md-4 col-xs-12 @filterCreateDate">by Create Date</a>
+                <a asp-action="SortBy" asp-route-sort="importance" class="btn btn-default col-md-4 col-xs-12 @filterImportance">By Importance</a>
+            </div>
         </div>
-        <div class="col-md-3">
-            @Html.ActionLink("By Created Date", "Index", new { sort = ViewBag.createDateSortParm })
-        </div>
-        <div class="col-md-3">
-            @Html.ActionLink("By Importance", "Index", new { sort = ViewBag.importanceSortParm })
-        </div>
-        <div class="col-md-3">
-            @Html.ActionLink("Hide finished", "Index", new { sort = ViewBag.filterFinishedParm })
-        </div>
+        <a asp-action="ShowOnlyFinished" class="btn btn-default col-md-2 col-xs-12 pull-right @hideFinished">@filterHideFinshed</a>
     </div>
 </p>
 
@@ -49,29 +52,46 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinishDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Finished)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Importance)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @{
+            if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    string FinishedDateString = item.Finished ? "[" + item.CompareDate(item.FinishedDate) + "]" : "";
+                    string FinishDateString = item.CompareDate(item.FinishDate);
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td>
+                            @FinishDateString
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Finished)
+                            @FinishedDateString
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Importance)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <div class="alert alert-info" role="alert">
+                        <strong>No notes found!</strong>
+                    </div>
+                </tr>
+            }
+        }
     </tbody>
 </table>
