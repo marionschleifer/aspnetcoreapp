@@ -11,87 +11,102 @@
     String filterImportance = Context.Session.GetString("SelectedFilter").Equals("importance") ? "active" : "";
 }
 
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create" class="btn btn-default">Create New</a>
-</p>
+<h2>My Notes</h2>
 
 <p>
     <div id="filters" class="row">
         <div class="col-md-6 col-xs-12 pull-left">
-            <div class="row">
-                <a asp-action="SortBy" asp-route-sort="finishDate" class="btn btn-default col-md-4 col-xs-12 @filterFinishDate">by Finish Date</a>
-                <a asp-action="SortBy" asp-route-sort="createDate" class="btn btn-default col-md-4 col-xs-12 @filterCreateDate">by Create Date</a>
-                <a asp-action="SortBy" asp-route-sort="importance" class="btn btn-default col-md-4 col-xs-12 @filterImportance">By Importance</a>
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Sort by
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a asp-action="SortBy" asp-route-sort="finishDate" class="btn btn-default @filterFinishDate">Finish Date</a></li>
+                    <li><a asp-action="SortBy" asp-route-sort="createDate" class="btn btn-default @filterCreateDate">Create Date</a></li>
+                    <li><a asp-action="SortBy" asp-route-sort="importance" class="btn btn-default @filterImportance">Importance</a></li>
+                </ul>
+                <a asp-action="ShowOnlyFinished" class="btn btn-default @hideFinished">@filterHideFinshed</a>
             </div>
         </div>
-        <a asp-action="ShowOnlyFinished" class="btn btn-default col-md-2 col-xs-12 pull-right @hideFinished">@filterHideFinshed</a>
     </div>
 </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FinishDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Finished)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Importance)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            if (Model.Count() > 0)
-            {
-                foreach (var item in Model)
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Content)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FinishDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Finished)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Importance)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.Count() > 0)
                 {
-                    string FinishedDateString = item.Finished ? "[" + item.CompareDate(item.FinishedDate) + "]" : "";
-                    string FinishDateString = item.CompareDate(item.FinishDate);
+                    foreach (var item in Model)
+                    {
+                        string FinishedDateString = item.Finished ? "[" + item.CompareDate(item.FinishedDate) + "]" : "";
+                        string FinishDateString = item.CompareDate(item.FinishDate);
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Content)
+                            </td>
+                            <td>
+                                @FinishDateString
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Finished)
+                                @FinishedDateString
+                            </td>
+                            <td>
+                                @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (item.Importance >= i)
+                                        {
+                                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                                        }
+                                    }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="action glyphicon glyphicon-zoom-in"></a> 
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="action glyphicon glyphicon-pencil"></a> 
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="action glyphicon glyphicon-trash"></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Content)
-                        </td>
-                        <td>
-                            @FinishDateString
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Finished)
-                            @FinishedDateString
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Importance)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
+                        <div class="alert alert-info" role="alert">
+                            <strong>No notes found!</strong>
+                        </div>
                     </tr>
                 }
             }
-            else
-            {
-                <tr>
-                    <div class="alert alert-info" role="alert">
-                        <strong>No notes found!</strong>
-                    </div>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
+

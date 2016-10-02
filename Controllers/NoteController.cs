@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using NotesApp.Models;
 using NotesApp.Services;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace NotesApp.Controllers
 {
@@ -16,6 +17,9 @@ namespace NotesApp.Controllers
 
         private string SessionSelectedFilter = "SelectedFilter";
         private string SessionHideFinished = "HideFinished";
+        private string SessionCurrentStyle = "CurrentStyle";
+        private string Yeti = "/lib/bootstrap/dist/css/yeti.bootstrap.css";
+        private string Superhero = "/lib/bootstrap/dist/css/superhero.bootstrap.css";
 
         public NoteController(NotesContext context, INotesService notesService)
         {
@@ -25,6 +29,10 @@ namespace NotesApp.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.Get(SessionCurrentStyle) == null)
+            {
+                HttpContext.Session.SetString(SessionCurrentStyle, Yeti);
+            }
             if (HttpContext.Session.Get(SessionSelectedFilter) == null)
             {
                 HttpContext.Session.SetString(SessionSelectedFilter, "Default");
@@ -32,6 +40,7 @@ namespace NotesApp.Controllers
 
             string sort = HttpContext.Session.GetString(SessionSelectedFilter);
             bool hide = Convert.ToBoolean(HttpContext.Session.GetInt32(SessionHideFinished));
+            string style = HttpContext.Session.GetString(SessionCurrentStyle);
 
             List<Note> notes = _notesService.GetSortedList(_context.Notes.ToList(), sort, hide);
             return View(notes);
@@ -117,7 +126,7 @@ namespace NotesApp.Controllers
             return RedirectToAction("Index");
         }
 
-                // GET: Note/SortBy
+        // GET: Note/SortBy
         [HttpGet]
         public IActionResult SortBy(string sort)
         {
@@ -131,6 +140,20 @@ namespace NotesApp.Controllers
         {
             bool showOnlyFinished = Convert.ToBoolean(HttpContext.Session.GetInt32(SessionHideFinished));
             HttpContext.Session.SetInt32(SessionHideFinished, Convert.ToInt32(!showOnlyFinished));
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult SwitchStyle()
+        {
+            if (HttpContext.Session.GetString(SessionCurrentStyle) == Yeti)
+            {
+                HttpContext.Session.SetString(SessionCurrentStyle, Superhero);
+            }
+            else
+            {
+                HttpContext.Session.SetString(SessionCurrentStyle, Yeti);
+            }
             return RedirectToAction("Index");
         }
     }    
