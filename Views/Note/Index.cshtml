@@ -32,81 +32,79 @@
     </div>
 </p>
 
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Content)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FinishDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Finished)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Importance)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                if (Model.Count() > 0)
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th class="hidden-xs">
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th class="hidden-xs">
+                @Html.DisplayNameFor(model => model.FinishDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Finished)
+            </th>
+            <th class="hidden-xs">
+                @Html.DisplayNameFor(model => model.Importance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
                 {
-                    foreach (var item in Model)
-                    {
-                        string FinishedDateString = item.Finished ? "[" + item.CompareDate(item.FinishedDate) + "]" : "";
-                        string FinishDateString = item.CompareDate(item.FinishDate);
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Content)
-                            </td>
-                            <td>
-                                @FinishDateString
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Finished)
-                                @FinishedDateString
-                            </td>
-                            <td>
-                                @for (int i = 1; i <= 5; i++)
-                                    {
-                                        if (item.Importance >= i)
-                                        {
-                                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                        }
-                                        else
-                                        {
-                                            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                                        }
-                                    }
-                            </td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="action glyphicon glyphicon-zoom-in"></a> 
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="action glyphicon glyphicon-pencil"></a> 
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="action glyphicon glyphicon-trash"></a>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
+                    string FinishedDateString = item.Finished ? "[" + item.CompareDate(item.FinishedDate) + "]" : "";
+                    string FinishDateString = item.CompareDate(item.FinishDate);
                     <tr>
-                        <div class="alert alert-info" role="alert">
-                            <strong>No notes found!</strong>
-                        </div>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td class="hidden-xs">
+                            @Html.DisplayFor(modelItem => item.Content)
+                        </td>
+                        <td class="hidden-xs">
+                            @FinishDateString
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Finished)
+                            @FinishedDateString
+                        </td>
+                        <td class="hidden-xs">
+                            @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (item.Importance >= i)
+                                    {
+                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                                    }
+                                }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="action glyphicon glyphicon-zoom-in"></a> 
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="action glyphicon glyphicon-pencil"></a> 
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="action glyphicon glyphicon-trash"></a>
+                        </td>
                     </tr>
                 }
             }
-        </tbody>
-    </table>
-</div>
+            else
+            {
+                <tr>
+                    <div class="alert alert-info" role="alert">
+                        <strong>No notes found!</strong>
+                    </div>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
 
